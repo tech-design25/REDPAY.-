@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Instructions</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #0a0000;
+        font-family: Arial, sans-serif;
+        color: #fff;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    p.subtext {
+        text-align: center;
+        color: #bbbbbb;
+        margin-bottom: 25px;
+    }
+
+    .card {
+        background: #1a0000;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255,0,0,0.2);
+    }
+
+    .label {
+        color: #aaaaaa;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .value-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #250000;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .copy-btn {
+        background: #400000;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 1px solid red;
+        transition: 0.2s;
+    }
+
+    .copy-btn:hover {
+        background: #5a0000;
+    }
+
+    .upload-box {
+        border: 2px dashed red;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .upload-box:hover {
+        background: #150000;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .button {
+        width: 100%;
+        background: red;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        border-radius: 10px;
+        margin-top: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .button:hover {
+        background: #d40000;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Payment Instructions</h1>
+    <p class="subtext">Transfer to the account below</p>
+
+    <!-- Amount -->
+    <div class="card">
+        <div class="label">Amount to Pay</div>
+        <div class="value-box">
+            ₦6,700
+            <div class="copy-btn" onclick="copyText('6700')">Copy</div>
+        </div>
+    </div>
+
+    <!-- Bank Name -->
+    <div class="card">
+        <div class="label">Bank Name</div>
+        <div class="value-box">
+            Moniepoint MFB
+            <div class="copy-btn" onclick="copyText('Moniepoint MFB')">Copy</div>
+        </div>
+    </div>
+
+    <!-- Account Number -->
+    <div class="card">
+        <div class="label">Account Number</div>
+        <div class="value-box">
+            5136743923
+            <div class="copy-btn" onclick="copyText('5136743923')">Copy</div>
+        </div>
+    </div>
+
+    <!-- Account Name -->
+    <div class="card">
+        <div class="label">Account Name</div>
+        <div class="value-box">
+            AROWOJOLU PIUS
+            <div class="copy-btn" onclick="copyText('AROWOJOLU PIUS')">Copy</div>
+        </div>
+    </div>
+
+    <!-- Upload Screenshot -->
+    <label for="upload">
+        <div class="upload-box" id="uploadBox">
+            ⬆ <br><br>
+            Click to upload payment proof<br>
+            <small>PNG, JPG up to 10MB</small>
+        </div>
+    </label>
+    <input type="file" id="upload" accept="image/*">
+
+    <div class="button">I Have Made Payment</div>
+</div>
+
+<!-- PAYMENT NOTICE MODAL -->
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <div class="modal-header">
+            ⚠️ Important Payment Notice
+        </div>
+
+        <ul class="modal-list">
+            <li>Transfer the <b>exact amount</b> shown on this page.</li>
+
+            <li>Upload a clear <b>payment screenshot</b> immediately after transfer.</li>
+
+            <li class="warning">
+                ⚠️ <b>Avoid using Opay bank.</b>  
+                Due to temporary network issues from Opay servers, payments made with Opay may not be confirmed.  
+                Please use <b>any other Nigerian bank</b> for instant confirmation.
+            </li>
+
+            <li class="success">
+                ✔ Payments made with other banks are confirmed within minutes.
+            </li>
+
+            <li class="error">
+                ❌ Do not dispute your payment under any circumstances — disputes delay confirmation.
+            </li>
+        </ul>
+
+        <button class="modal-btn" onclick="closeModal()">I Understand</button>
+    </div>
+</div>
+
+<style>
+    /* Background overlay */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Modal box */
+    .modal-content {
+        width: 90%;
+        max-width: 500px;
+        background: #111111;
+        padding: 20px;
+        border-radius: 12px;
+        position: relative;
+        animation: popup 0.3s ease;
+        color: #fff;
+    }
+
+    @keyframes popup {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .modal-list {
+        list-style: none;
+        padding: 0;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .modal-list li {
+        margin-bottom: 15px;
+    }
+
+    .warning {
+        color: #ff4444;
+    }
+
+    .success {
+        color: #87ff87;
+    }
+
+    .error {
+        color: #ff6666;
+    }
+
+    .modal-btn {
+        width: 100%;
+        padding: 14px;
+        background: red;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .modal-btn:hover {
+        background: #c40000;
+    }
+
+    .close {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 26px;
+        cursor: pointer;
+        color: #ccc;
+    }
+
+    .close:hover {
+        color: #fff;
+    }
+</style>
+
+<script>
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        alert("Copied: " + text);
+    }
+
+    document.getElementById("upload").addEventListener("change", function() {
+        const file = this.files[0];
+        if (!file) return;
+
+        // Display uploaded file name
+        document.getElementById("uploadBox").innerHTML =
+            "Uploaded: <b>" + file.name + "</b>";
+    });
+
+    // auto-show payment notice on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById("paymentModal").style.display = "flex";
+    });
+
+    function closeModal() {
+        document.getElementById("paymentModal").style.display = "none";
+    }
+
+    // Handle "I Have Made Payment" button click
+    document.querySelector('.button').addEventListener('click', () => {
+        window.location.href = 'processing.html?next=confirmed';
+    });
+</script>
+
+</body>
+</html>

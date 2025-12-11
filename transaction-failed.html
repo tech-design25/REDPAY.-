@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Failed</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: radial-gradient(#300000, #0a0000);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .card {
+        width: 90%;
+        max-width: 400px;
+        background: rgba(20, 20, 20, 0.7);
+        padding: 30px;
+        border-radius: 18px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        border: 1px solid rgba(255, 0, 0, 0.2);
+    }
+
+    .error-circle {
+        width: 90px;
+        height: 90px;
+        background: #b30000;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 8px solid #660000;
+    }
+
+    .error-circle span {
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 23px;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #ff4444;
+    }
+
+    p {
+        font-size: 15px;
+        opacity: 0.8;
+        margin-top: 10px;
+        line-height: 1.5;
+    }
+
+    .reason-box {
+        background: rgba(255, 0, 0, 0.13);
+        border: 1px solid rgba(255, 0, 0, 0.2);
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffb3b3;
+        font-size: 16px;
+    }
+
+    .reason-box span:last-child {
+        font-size: 22px;
+        color: #ff5555;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 14px;
+        border: none;
+        font-size: 16px;
+        margin-top: 18px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .dashboard-btn {
+        background: black;
+        color: white;
+    }
+
+    .support-btn {
+        background: #1298ff;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 17px;
+    }
+
+    .support-btn i {
+        font-size: 18px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="error-circle">
+        <span>✕</span>
+    </div>
+
+    <h2>Transaction verification failed!</h2>
+
+    <p>
+        Your payment could not be completed. Reason: No payment received 
+        from you/invalid payment method. If you have made the payment kindly 
+        send payment proof to our support team below.
+    </p>
+
+    <div class="reason-box">
+        <span>Invalid Payment</span>
+        <span>✕</span>
+    </div>
+
+    <button class="btn dashboard-btn" onclick="window.location.href='dashboard.html'">Go to Dashboard</button>
+    <button class="btn support-btn" onclick="alert('Opening support chat...')">
+        ✈ Contact Support
+    </button>
+
+</div>
+
+</body>
+</html>
+

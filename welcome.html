@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RedPay - Welcome</title>
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      background:linear-gradient(180deg,#120606 0%, #060404 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      color:white;
+      font-family:Arial;
+    }
+    .card {
+      width: 100%;
+      max-width:420px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 22px;
+      padding: 32px;
+    }
+    .bonus-card{
+      margin:24px 0;
+      padding:20px;
+      border-radius:14px;
+      background:#2b1111;
+      text-align:center;
+    }
+    .cta{
+      width:100%;
+      display:block;
+      margin-top:12px;
+      padding:15px;
+      background:#e53935;
+      border-radius:12px;
+      text-align:center;
+      color:white;
+      font-weight:bold;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card">
+    <h1 id="welcomeName">Welcome!</h1>
+    <p>Your account is ready to go</p>
+
+    <div class="bonus-card">
+      <p style="color:#d8bdbd;">🎉 Welcome Bonus</p>
+      <h2 style="color:#ff6b3d; font-size:40px;">₦160,000</h2>
+      <p>has been added to your wallet </p>
+    </div>
+
+    <a class="cta" href="dashboard.html">Go to Dashboard</a>
+  </main>
+
+  <script>
+    // get the name stored in signup page
+    const username = localStorage.getItem("registeredName");
+
+    // if no name stored, fallback to "User"
+    const finalName = username ? username : "User";
+
+    // update welcome text
+    document.getElementById("welcomeName").textContent = `Welcome, ${finalName}!`;
+
+    // persist balance for dashboard
+    localStorage.setItem('rp_balance', '160000');
+  </script>
+
+</body>
+</html>

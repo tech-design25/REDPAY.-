@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RedPay — Get Started</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrapper" role="main">
+    <div class="brand" aria-hidden="false">
+      <div class="logo" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="6" fill="#0f0f0f"/>
+          <path d="M7 6h4c2.2 0 3.5 1 3.5 3 0 1.3-.8 2.2-1.9 2.6L17 16H13l-1-2H9v2H7V6z" fill="#ff4b4b"/>
+        </svg>
+      </div>
+      <div style="font-weight:700; font-size:15px; margin-bottom:6px">RedPay</div>
+      <div class="tag">Your gateway to seamless payments</div>
+    </div>
+
+    <section class="card" aria-labelledby="getstarted">
+      <h1 id="getstarted">Get Started</h1>
+      <p class="subtitle">Create an account or sign in to continue</p>
+
+      <div class="toggle" role="tablist" aria-label="account toggle">
+        <button id="tabSignup" class="active" role="tab" aria-selected="true">Sign Up</button>
+        <button id="tabSignin" role="tab" aria-selected="false">Sign In</button>
+      </div>
+
+      <form id="authForm" autocomplete="on" novalidate>
+        <div class="two-half row" id="nameRow">
+          <div class="field">
+            <label for="firstName">First Name</label>
+            <input id="firstName" name="firstName" class="input" type="text" placeholder="John" />
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" name="lastName" class="input" type="text" placeholder="Doe" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix">+234</div>
+            <input id="phone" name="phone" class="input phone-input" type="tel" inputmode="tel" placeholder="800 000 0000" value="800 000 0000" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" class="input" type="email" placeholder="john@example.com" />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" class="input" type="password" placeholder="••••••••" />
+        </div>
+
+        <div class="field" id="countryField">
+          <label for="country">Country</label>
+
+          <div class="select country-list" style="position:relative">
+            <button id="countryBtn" type="button" class="input country-btn" aria-haspopup="listbox" aria-expanded="false">
+              <div class="country-left">
+                <span class="flag" aria-hidden="true">
+                  <svg viewBox="0 0 6 4" width="22" height="14" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <rect width="6" height="4" fill="#008753"/>
+                    <rect x="2" width="2" height="4" fill="#fff"/>
+                  </svg>
+                </span>
+                <span id="countryLabel">Nigeria</span>
+              </div>
+              <span class="caret">▾</span>
+            </button>
+
+            <div id="countryMenu" class="country-menu" role="listbox" aria-labelledby="country" hidden>
+              <div class="country-item" data-code="+234" data-name="Nigeria" role="option" tabindex="0">
+                <span class="flag" aria-hidden="true">
+                  <svg viewBox="0 0 6 4" width="22" height="14" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <rect width="6" height="4" fill="#008753"/>
+                    <rect x="2" width="2" height="4" fill="#fff"/>
+                  </svg>
+                </span>
+                <span>Nigeria</span>
+              </div>
+
+              <div class="country-item" data-code="+1" data-name="United States" role="option" tabindex="0">
+                <span class="flag" aria-hidden="true">
+                  <svg viewBox="0 0 60 30" width="22" height="14" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="60" height="30" fill="#b22234"/>
+                    <g fill="#fff">
+                      <rect y="3" width="60" height="3"/>
+                      <rect y="9" width="60" height="3"/>
+                      <rect y="15" width="60" height="3"/>
+                      <rect y="21" width="60" height="3"/>
+                      <rect y="27" width="60" height="3"/>
+                    </g>
+                    <rect width="26" height="16" fill="#3c3b6e"/>
+                  </svg>
+                </span>
+                <span>United States</span>
+              </div>
+
+              <div class="country-item" data-code="+44" data-name="United Kingdom" role="option" tabindex="0">
+                <span class="flag" aria-hidden="true">
+                  <svg viewBox="0 0 60 30" width="22" height="14" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="60" height="30" fill="#012169"/>
+                    <path d="M0 0 L60 30 M60 0 L0 30" stroke="#fff" stroke-width="6"/>
+                    <path d="M0 0 L60 30 M60 0 L0 30" stroke="#c8102e" stroke-width="4"/>
+                    <path d="M30 0 L30 30 M0 15 L60 15" stroke="#fff" stroke-width="8"/>
+                    <path d="M30 0 L30 30 M0 15 L60 15" stroke="#c8102e" stroke-width="4"/>
+                  </svg>
+                </span>
+                <span>United Kingdom</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit">Create account</button>
+        <p class="small" id="formNote">By creating an account you agree to our Terms & Privacy.</p>
+      </form>
+    </section>
+  </div>
+
+<script type="module" src="main.js"></script>
+<script>
+  // auto-login check
+  (function(){
+    const phone = localStorage.getItem('rp_phone');
+    const pwd   = localStorage.getItem('rp_pwd');
+    const name  = localStorage.getItem('registeredName');
+    if(phone && pwd && name){
+      window.location.replace('dashboard.html');
+    }
+  })();
+</script>
+</body>
+</html>
+

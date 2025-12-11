@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Withdraw Funds — Dark UI</title>
+  <style>
+    :root{
+      --bg:#0b0b0c;
+      --card:#100909;
+      --muted:#9b9b9b;
+      --accent:#e53935;
+      --input:#0f0f10;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;color:#fff;background:linear-gradient(180deg,#070707,#120808);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px}
+    .wrap{width:100%;max-width:480px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.15));padding:22px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .title{font-size:28px;text-align:center;font-weight:800;margin-bottom:6px}
+    .subtitle{text-align:center;color:var(--muted);margin-bottom:18px}
+
+    .balance-card{background:rgba(229,57,53,0.06);border-radius:16px;padding:18px;margin-bottom:18px;border:1px solid rgba(229,57,53,0.12);text-align:center}
+    .balance-label{color:var(--muted);font-size:13px}
+    .balance-amount{font-size:28px;font-weight:800;color:var(--accent);margin-top:6px}
+
+    .form{display:flex;flex-direction:column;gap:14px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], input[type="number"], input[type="password"], select{
+      width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:var(--input);color:#fff;font-size:16px;outline:none
+    }
+    .note{font-size:13px;color:var(--muted)}
+    .warning{color:#ffb4b4;font-size:13px}
+
+    .bottom{margin-top:18px;display:flex;gap:12px;align-items:center}
+    .withdraw-btn{flex:1;padding:14px;border-radius:14px;border:none;background:linear-gradient(90deg,var(--accent),#b71c1c);color:#fff;font-weight:700;font-size:16px;cursor:pointer}
+
+    .helper{font-size:13px;color:var(--muted);margin-top:6px}
+
+    .error{color:#ff8a80;font-size:13px;margin-top:6px}
+
+    @media (max-width:520px){body{padding:12px}.title{font-size:24px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main">
+      <div class="title">Withdraw Funds</div>
+      <div class="subtitle">Transfer money to your bank account</div>
+
+      <div class="balance-card">
+        <div class="balance-label">Available Balance</div>
+        <div id="balanceAmount" class="balance-amount">₦0</div>
+      </div>
+
+      <form id="withdrawForm" class="form" autocomplete="off">
+        <div>
+          <label for="accountNumber">Account Number</label>
+          <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="\d*" placeholder="1234567890" required />
+        </div>
+
+        <div>
+          <label for="accountName">Account Name</label>
+          <input id="accountName" name="accountName" type="text" placeholder="John Doe" required />
+        </div>
+
+        <div>
+          <label for="bankSelect">Select Bank</label>
+          <select id="bankSelect" name="bankSelect" required>
+            <option value="">Choose bank</option>
+            <option>Access Bank</option>
+            <option>Ecobank</option>
+            <option>FCMB</option>
+            <option>Fidelity Bank</option>
+            <option>First Bank</option>
+            <option>GTBank</option>
+            <option>Heritage Bank</option>
+            <option>Keystone Bank</option>
+            <option>Polaris Bank</option>
+            <option>Stanbic IBTC</option>
+            <option>Sterling Bank</option>
+            <option>Union Bank</option>
+            <option>UBA</option>
+            <option>Wema Bank</option>
+            <option>Zenith Bank</option>
+            <option>Opay</option>
+            <option>Palmpay</option>
+            <option>Moniepoint</option>
+            <option>ALAT by Wema</option>
+            <option>Carbon</option>
+            <option>Paystack</option>
+            <option>Rubiks Bank</option>
+            <option>VFD Microfinance Bank</option>
+            <option>Providus Bank</option>
+            <option>Keystone</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="amount">Amount (₦)</label>
+          <input id="amount" name="amount" type="number" min="1000" step="1" value="5000" required />
+          <div class="helper">Minimum: ₦1,000</div>
+        </div>
+
+        <div>
+          <label for="rpc">Enter RPC Code</label>
+          <input id="rpc" name="rpc" type="password" placeholder="••••••" required />
+          <div class="warning">⚠ Access code is required for withdrawal</div>
+        </div>
+
+        <div id="error" class="error" aria-live="polite"></div>
+
+        <div class="bottom">
+          <button id="withdrawBtn" class="withdraw-btn" type="submit">Withdraw Funds</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    // Populate balance from localStorage
+    const user = {
+      balance: Number(localStorage.getItem('rp_balance') || 0)
+    };
+
+    // Utility: format amount with commas
+    function formatNaira(n){
+      return '₦' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    // Populate balance on load
+    const balanceEl = document.getElementById('balanceAmount');
+    function refreshBalance(){
+      balanceEl.textContent = formatNaira(user.balance);
+    }
+    refreshBalance();
+
+    // Form validation & submission
+    const form = document.getElementById('withdrawForm');
+    const errorEl = document.getElementById('error');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      errorEl.textContent = '';
+
+      // Read values carefully
+      const amountInput = document.getElementById('amount');
+      const amount = Math.floor(Number(amountInput.value));
+      const min = 1000;
+
+      // RPC code
+      const rpc = document.getElementById('rpc').value.trim();
+
+      // Account fields
+      const accountNumber = document.getElementById('accountNumber').value.trim();
+      const accountName = document.getElementById('accountName').value.trim();
+      const bank = document.getElementById('bankSelect').value;
+
+      // Basic checks
+      if(!accountNumber || !accountName || !bank){
+        errorEl.textContent = 'Please fill all account details and choose a bank.';
+        return;
+      }
+      if(!rpc){
+        errorEl.textContent = 'Access (RPC) code is required.';
+        return;
+      }
+      if(rpc !== 'RPC200420'){
+        // show inline notification
+        const note = document.createElement('div');
+        note.id = 'rpcNotify';
+        note.style.cssText = `
+          position:fixed; top:20px; right:20px; background:#ff3b3b; color:white;
+          padding:15px 20px; border-radius:10px; box-shadow:0 0 10px rgba(255,0,0,0.4);
+          font-size:16px; display:flex; align-items:center; gap:10px;
+          animation: slideIn 0.5s ease forwards; z-index:9999;
+        `;
+        note.innerHTML = `
+          <span style="font-size:22px;">⚠️</span>
+          <span>Please purchase your RPC CODE to access your withdrawal.</span>
+          <button style="margin-left:auto;background:rgba(255,255,255,0.2);border:none;padding:5px 10px;color:white;border-radius:5px;cursor:pointer;" onclick="this.parentElement.remove()">X</button>
+        `;
+        document.body.appendChild(note);
+        setTimeout(()=> note.remove(), 3000);
+        return;
+      }
+      if(isNaN(amount) || amount < min){
+        errorEl.textContent = 'Enter a valid amount (minimum ₦1,000).';
+        return;
+      }
+      if(amount > user.balance){
+        errorEl.textContent = 'Insufficient balance. You can withdraw up to ' + formatNaira(user.balance) + '.';
+        return;
+      }
+
+      // Disable UI while processing
+      const submitBtn = document.getElementById('withdrawBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+
+      // show loading spinner
+      const spinner = document.createElement('div');
+      spinner.innerHTML = '⏳';
+      spinner.style.cssText = 'font-size:32px; text-align:center; margin:12px 0;';
+      submitBtn.parentNode.insertBefore(spinner, submitBtn);
+      submitBtn.style.display = 'none';
+
+      // Simulate network request
+      setTimeout(()=>{
+        // simulate success response
+        user.balance = user.balance - amount;
+        localStorage.setItem('rp_balance', user.balance);
+        // go to success page with amount in url
+        window.location.href = 'success.html?amount=' + amount;
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
+

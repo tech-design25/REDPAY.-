@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>RedPay - Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{
+      --bg-dark: #060404;
+      --panel: #120606;
+      --card-red: #e53935;
+      --card-red-dark: #b71c1c;
+      --card-deep: #2b1111;
+      --muted: #bfaeae;
+      --glass: rgba(255,255,255,0.02);
+      --rounded: 14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background: linear-gradient(180deg,#120606 0%, #060404 100%);
+      color:#fff;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:18px;
+    }
+
+    .container{
+      width:100%;
+      max-width:420px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo img{
+      width:36px;
+      height:36px;
+      border-radius:6px;
+      background:white;
+      display:block;
+    }
+
+    .avatar {
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      background: rgba(229,57,53,0.08);
+      border: 1px solid rgba(255,255,255,0.04);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:#fff;
+      font-size:14px;
+      position:relative;
+    }
+
+    /* big balance card */
+    .balance-card{
+      background: linear-gradient(180deg, var(--card-red), var(--card-red-dark));
+      border-radius: 18px;
+      padding:18px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+      margin-bottom:20px;
+      position:relative;
+    }
+    .balance-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .balance-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      opacity:0.95;
+      font-weight:700;
+    }
+    .balance-amount{
+      font-size:36px;
+      font-weight:800;
+      margin:6px 0 4px;
+    }
+    .balance-id{
+      font-size:12px;
+      color:rgba(255,255,255,0.85);
+      opacity:0.9;
+    }
+
+    .balance-actions{
+      margin-top:12px;
+      display:flex;
+      gap:12px;
+    }
+    .btn{
+      flex:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      color:white;
+      border: none;
+      font-size:14px;
+    }
+    .btn-claim{ background: rgba(255,255,255,0.08); }
+    .btn-withdraw{ background: rgba(255,255,255,0.06); }
+
+    /* grid */
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:14px;
+    }
+    .grid-item{
+      background: rgba(255,255,255,0.02);
+      border-radius:12px;
+      padding:18px 10px;
+      text-align:center;
+      min-height:84px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .grid-icon{
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:8px;
+      font-weight:700;
+      font-size:18px;
+    }
+    .grid-label{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    hr.sep{
+      border: none;
+      height:1px;
+      background: rgba(255,255,255,0.03);
+      margin:18px 0;
+    }
+
+    /* small footer */
+    .bottom-space{
+      height:60px;
+    }
+
+    /* promo carousel */
+    .promo-carousel{
+      position:relative;
+      width:100%;
+      height:160px;
+      border-radius:18px;
+      overflow:hidden;
+      margin-top:18px;
+      background:#000;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .carousel-track{
+      display:flex;
+      height:100%;
+      transition: transform .6s ease;
+    }
+    .carousel-slide{
+      min-width:100%;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .slide-bg{
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      filter:brightness(.4);
+    }
+    .slide-bg.shopping{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160"><rect fill="%23e53935" width="400" height="160"/><text x="50%" y="50%" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Shopping</text></svg>');}
+    .slide-bg.event{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160"><rect fill="%232196F3" width="400" height="160"/><text x="50%" y="50%" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Event</text></svg>');}
+    .slide-bg.winners{background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160"><rect fill="%234CAF50" width="400" height="160"/><text x="50%" y="50%" text-anchor="middle" fill="white" font-size="24" font-family="Arial">Winners</text></svg>');}
+    .slide-content{
+      position:relative;
+      text-align:center;
+      z-index:1;
+      max-width:90%;
+    }
+    .slide-title{
+      font-size:18px;
+      font-weight:700;
+      margin:0 0 6px;
+    }
+    .slide-subtitle{
+      font-size:13px;
+      opacity:.9;
+      margin:0 0 8px;
+    }
+    .slide-text{
+      font-size:12px;
+      opacity:.8;
+    }
+    .mm-logos{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .mm-badge{
+      background:rgba(255,255,255,.15);
+      border-radius:6px;
+      padding:4px 8px;
+      font-size:11px;
+      font-weight:600;
+    }
+    .carousel-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,.3);
+      border:none;
+      color:#fff;
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      font-size:18px;
+      cursor:pointer;
+      z-index:2;
+    }
+    .carousel-arrow.left{left:10px;}
+    .carousel-arrow.right{right:10px;}
+    .carousel-dots{
+      position:absolute;
+      bottom:10px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:6px;
+    }
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,.4);
+      border:none;
+      cursor:pointer;
+    }
+    .dot.active{background:#fff;}
+    @media (max-width:420px){
+      .promo-carousel{height:140px;}
+      .slide-title{font-size:16px;}
+      .slide-subtitle{font-size:12px;}
+    }
+
+    @media (max-width:420px){
+      .balance-amount{ font-size:32px; }
+      .grid-item{ min-height:76px; padding:14px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <div class="topbar">
+      <div class="logo">
+        <!-- small logo placeholder -->
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><rect width='100%' height='100%' fill='%23ffffff'/><text x='50%' y='55%' font-size='20' font-family='Arial' text-anchor='middle' fill='%23e53935'>R</text></svg>" alt="RedPay logo">
+        <div style="opacity:0.95;font-weight:700">RedPay</div>
+      </div>
+
+      <!-- avatar with initials -->
+      <div class="avatar" id="avatarInitials" title="User initials">AU</div>
+    </div>
+
+    <!-- balance card -->
+    <section class="balance-card" aria-label="Total Balance">
+      <div class="balance-top">
+        <div class="balance-title"> Total Balance </div>
+        <div style="font-size:13px; opacity:0.95; font-weight:700; background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:10px; font-size:13px;">Video</div>
+      </div>
+
+      <div class="balance-amount" id="balanceAmount">₦160,000</div>
+      <div class="balance-id" id="balanceId">ID: 5580045221</div>
+
+      <div class="balance-actions">
+        <button class="btn btn-claim" id="claimBtn">🎁 Claim ₦30,000</button>
+        <button class="btn btn-withdraw" id="withdrawBtn">✈️ Withdraw</button>
+      </div>
+    </section>
+
+    <hr class="sep">
+
+    <!-- grid of options -->
+    <div class="grid" role="navigation" aria-label="Main actions">
+      <div class="grid-item" id="buyRpc">
+        <div class="grid-icon" style="background:rgba(229,57,53,0.1); color:#e53935;">🛍️</div>
+        <div class="grid-label">BuyRPC</div>
+      </div>
+
+      <div class="grid-item" id="broadcast">
+        <div class="grid-icon" style="background:rgba(98,0,238,0.1); color:#6a1b9a;">📡</div>
+        <div class="grid-label">Broadcast</div>
+      </div>
+
+      <div class="grid-item" id="refer">
+        <div class="grid-icon" style="background:rgba(33,150,243,0.1); color:#1976d2;">🎁</div>
+        <div class="grid-label">Refer&amp;Earn</div>
+      </div>
+
+      <div class="grid-item" id="community">
+        <div class="grid-icon" style="background:rgba(76,175,80,0.1); color:#2e7d32;">👥</div>
+        <div class="grid-label">Community</div>
+      </div>
+
+      <div class="grid-item" id="history">
+        <div class="grid-icon" style="background:rgba(255,152,0,0.1); color:#ef6c00;">⟲</div>
+        <div class="grid-label">History</div>
+      </div>
+
+      <div class="grid-item" id="support">
+        <div class="grid-icon" style="background:rgba(229,57,53,0.06); color:#e53935;">🎧</div>
+        <div class="grid-label">Support</div>
+      </div>
+    </div>
+
+    <!-- promo carousel -->
+    <div class="promo-carousel" aria-label="Promotions">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Banner 1 -->
+        <div class="carousel-slide" data-slide="0">
+          <div class="slide-bg shopping"></div>
+          <div class="slide-content">
+            <h3 class="slide-title">Transact & Win</h3>
+            <p class="slide-subtitle">Locations: Cheers Gold Crest Mall | ChrisMar Hotel | Hot Spot Pub & Grill</p>
+            <p class="slide-text">All customers who pay with PayGo in store stand a chance to win great prizes.</p>
+          </div>
+        </div>
+
+        <!-- Banner 2 -->
+        <div class="carousel-slide" data-slide="1">
+          <div class="slide-bg event"></div>
+          <div class="slide-content">
+            <h3 class="slide-title">NASDEC Complex Lusaka</h3>
+            <p class="slide-subtitle">August 27–28</p>
+            <div class="mm-logos">
+              <span class="mm-badge">Airtel Money</span>
+              <span class="mm-badge">MTN</span>
+              <span class="mm-badge">Zamtel</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banner 3 -->
+        <div class="carousel-slide" data-slide="2">
+          <div class="slide-bg winners"></div>
+          <div class="slide-content">
+            <h3 class="slide-title">Winners of K20 Airtime</h3>
+            <p class="slide-subtitle">Patience Ng’andwe, Phiri John</p>
+            <p class="slide-text">🎉 Congratulations!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- nav arrows -->
+      <button class="carousel-arrow left" id="arrowLeft" aria-label="Previous slide">‹</button>
+      <button class="carousel-arrow right" id="arrowRight" aria-label="Next slide">›</button>
+
+      <!-- dots -->
+      <div class="carousel-dots" id="carouselDots">
+        <button class="dot active" data-slide="0" aria-label="Slide 1"></button>
+        <button class="dot" data-slide="1" aria-label="Slide 2"></button>
+        <button class="dot" data-slide="2" aria-label="Slide 3"></button>
+      </div>
+    </div>
+
+    <div class="bottom-space"></div>
+  </div>
+
+  <script>
+    // read stored name and balance from localStorage (set by signup/welcome)
+    const storedName = localStorage.getItem('registeredName') || '';
+    const storedBalance = '₦' + Number(localStorage.getItem('rp_balance')||160000).toLocaleString();
+    const storedId = localStorage.getItem('rp_userId') || generateId();
+    // if a claim countdown is in progress, restore it
+    if(localStorage.getItem('rp_claimed')){
+      const btn = document.getElementById('claimBtn');
+      btn.disabled = true;
+      let t = 24*60*60;
+      const tick = () => {
+        const h = String(Math.floor(t/3600)).padStart(2,'0');
+        const m = String(Math.floor((t%3600)/60)).padStart(2,'0');
+        const s = String(t%60).padStart(2,'0');
+        btn.textContent = `🎁 ${h}:${m}:${s}`;
+        if(--t<0){
+          btn.textContent = '🎁 Claim ₦30,000';
+          btn.disabled=false;
+          localStorage.removeItem('rp_claimed');
+          return;
+        }
+        setTimeout(tick,1000);
+      };
+      tick();
+    }
+
+    // helper: compute initials for "Initials only" (option 1)
+    function computeInitials(name) {
+      if(!name) return 'AU'; // fallback
+      const parts = name.trim().split(/\s+/);
+      if(parts.length === 1){
+        // if single word, use first two letters
+        return parts[0].slice(0,2).toUpperCase();
+      } else {
+        const first = parts[0][0] || '';
+        const last = parts[parts.length-1][0] || '';
+        return (first + last).toUpperCase();
+      }
+    }
+
+    function generateId(){
+      // simple random numeric id (11 digits)
+      const id = Math.floor(10000000000 + Math.random()*89999999999).toString();
+      localStorage.setItem('userId', id);
+      return id;
+    }
+
+    // apply to DOM
+    document.getElementById('avatarInitials').textContent = computeInitials(storedName);
+    document.getElementById('balanceAmount').textContent = storedBalance;
+    document.getElementById('balanceId').textContent = `ID: ${storedId}`;
+
+    // claim button handler
+    document.getElementById('claimBtn').addEventListener('click', () => {
+      // check if already claimed and still counting
+      if(localStorage.getItem('rp_claimed')){
+        return; // do nothing
+      }
+      // mark as claimed (24h flag)
+      localStorage.setItem('rp_claimed', '1');
+      // update balance
+      const oldBal = Number(localStorage.getItem('rp_balance')||160000);
+      const newBal = oldBal + 30000;
+      localStorage.setItem('rp_balance', newBal);
+      document.getElementById('balanceAmount').textContent = '₦' + newBal.toLocaleString();
+
+      // show top notification
+      const note = document.createElement('div');
+      note.style.cssText = `
+        position:fixed; top:-60px; left:50%; transform:translateX(-50%);
+        background:#28a745; color:#fff; padding:12px 20px; border-radius:8px;
+        font-weight:700; z-index:9999; transition:top .4s ease;
+      `;
+      note.textContent = '₦30,000 claimed successfully!';
+      document.body.appendChild(note);
+      setTimeout(()=> note.style.top = '18px', 10);
+      setTimeout(()=> note.remove(), 4000);
+
+      // disable button and start 24h countdown
+      const btn = document.getElementById('claimBtn');
+      btn.disabled = true;
+      let t = 24*60*60; // seconds
+      const tick = () => {
+        const h = String(Math.floor(t/3600)).padStart(2,'0');
+        const m = String(Math.floor((t%3600)/60)).padStart(2,'0');
+        const s = String(t%60).padStart(2,'0');
+        btn.textContent = `🎁 ${h}:${m}:${s}`;
+        if(--t<0){ 
+          // re-enable and reset text
+          btn.textContent = '🎁 Claim ₦30,000'; 
+          btn.disabled=false; 
+          // remove the flag so the user can claim again tomorrow
+          localStorage.removeItem('rp_claimed');
+          return; 
+        }
+        setTimeout(tick,1000);
+      };
+      tick();
+    });
+    document.getElementById('withdrawBtn').addEventListener('click', () => {
+      window.location.href = 'withdraw.html';
+    });
+
+    // grid clicks for demo
+    const items = ['buyRpc','broadcast','refer','community','history','support'];
+    items.forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        if(id === 'buyRpc'){
+          window.location.href = 'buyrpc.html';
+        }else{
+          alert(id + ' clicked');
+        }
+      });
+    });
+
+    // click on avatar to open profile
+    document.getElementById('avatarInitials').addEventListener('click', () => {
+      window.location.href = 'profile.html';
+    });
+
+    // promo carousel
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.dot');
+    const arrowLeft = document.getElementById('arrowLeft');
+    const arrowRight = document.getElementById('arrowRight');
+    let current = 0;
+    const total = 3;
+
+    function updateSlide(index){
+      current = (index + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d,i)=>d.classList.toggle('active', i === current));
+    }
+    function nextSlide(){ updateSlide(current + 1); }
+    function prevSlide(){ updateSlide(current - 1); }
+
+    arrowRight.addEventListener('click', nextSlide);
+    arrowLeft.addEventListener('click', prevSlide);
+    dots.forEach((d,i)=>d.addEventListener('click',()=>updateSlide(i)));
+
+    // autoplay every 2s
+    setInterval(nextSlide, 2000);
+  </script>
+</body>
+</html>

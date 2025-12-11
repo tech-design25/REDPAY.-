@@ -1,0 +1,198 @@
+:root{
+  --bg-start:#120407;
+  --bg-end:#3a0b0b;
+  --card:#171717;
+  --muted:#9b9b9b;
+  --input-bg:#222;
+  --accent:#ff3b3b;
+  --glass: rgba(255,255,255,0.02);
+  --radius:16px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%; margin:0; color:#eee; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,var(--bg-start) 0%, #200909 40%, var(--bg-end) 100%);
+  padding:32px;
+}
+
+.wrapper{
+  width:100%;
+  max-width:420px;
+  margin:16px;
+}
+
+/* header area */
+.brand{
+  text-align:center;
+  margin-bottom:18px;
+}
+.logo{
+  width:48px;
+  height:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.04);
+  border-radius:10px;
+  margin-bottom:10px;
+}
+.tag{
+  color: #cfcfcf;
+  opacity:0.9;
+  font-size:14px;
+}
+
+/* card */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: calc(var(--radius) + 8px);
+  padding:22px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+h1{
+  margin:0;
+  font-size:26px;
+  letter-spacing:-0.3px;
+}
+.subtitle{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* toggle */
+.toggle{
+  display:flex;
+  gap:10px;
+  background:transparent;
+  margin:18px 0 16px;
+}
+.toggle button{
+  flex:1;
+  padding:10px 12px;
+  border-radius:999px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  color:#d9d9d9;
+  background:transparent;
+  transition:all .18s ease;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.toggle button.active{
+  background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  color:#fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6), inset 0 0 24px rgba(0,0,0,0.25);
+}
+
+form{margin-top:6px}
+.row{display:flex; gap:12px}
+.field{
+  margin-bottom:14px;
+  font-size:14px;
+}
+label{
+  display:block;
+  margin-bottom:8px;
+  color:#ddd;
+  font-weight:600;
+  font-size:13px;
+}
+.input, .select {
+  width:100%;
+  background:var(--input-bg);
+  border-radius:12px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,0.02);
+  color:#eee;
+  outline:none;
+  box-shadow: inset 0 -6px 18px rgba(0,0,0,0.6);
+  font-size:15px;
+}
+.input::placeholder{ color: #8e8e8e; }
+
+.two-half .field{flex:1}
+
+/* custom country selector */
+.country-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  cursor:pointer;
+}
+.country-left{display:flex;align-items:center;gap:10px}
+.flag{
+  width:22px;height:14px;border-radius:3px;flex:0 0 22px;overflow:hidden;display:inline-block;
+}
+.caret{opacity:0.6}
+
+/* phone field small prefix */
+.phone-wrap{display:flex; gap:10px; align-items:center}
+.phone-prefix{
+  background:rgba(255,255,255,0.03);
+  padding:10px 12px;
+  border-radius:10px;
+  color:#ddd;
+  font-size:14px;
+  display:inline-flex;
+  align-items:center;
+}
+.phone-input{flex:1}
+
+/* primary button */
+.submit{
+  margin-top:6px;
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(90deg,var(--accent), #ff6b6b);
+  color:white;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow: 0 8px 24px rgba(255,40,40,0.12);
+}
+
+/* small note */
+.small{font-size:13px;color:var(--muted);margin-top:10px;text-align:center}
+
+/* country dropdown list */
+.country-list{
+  position:relative;
+}
+.country-menu{
+  position:absolute;
+  left:0;right:0;
+  margin-top:8px;
+  background:#151515;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.02);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  max-height:160px;
+  overflow-y:auto;
+  z-index:30;
+}
+.country-item{
+  display:flex;
+  gap:10px;
+  padding:10px 12px;
+  align-items:center;
+  cursor:pointer;
+}
+.country-item:hover{background:rgba(255,255,255,0.01)}
+
+/* responsive */
+@media (max-width:420px){
+  .wrapper{padding:0 6px}
+  .card{padding:18px}
+}

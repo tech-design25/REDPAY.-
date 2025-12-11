@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processing</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(#300000, #0a0000);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ccc;
+        font-family: Arial, sans-serif;
+        flex-direction: column;
+    }
+
+    .loader {
+        border: 5px solid rgba(255, 0, 0, 0.2);
+        border-top: 5px solid red;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .text {
+        font-size: 20px;
+        color: #cfcfcf;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="loader"></div>
+<div class="text" id="statusText">Initiating</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const nextPage = urlParams.get('next') || 'instructions';
+
+    setTimeout(() => {
+        document.getElementById("statusText").textContent = "Verifying";
+    }, 1000);
+
+    setTimeout(() => {
+        document.getElementById("statusText").textContent = "Processing";
+    }, 2000);
+
+    // After 5 seconds total, redirect based on next parameter
+    setTimeout(() => {
+        if (nextPage === 'failed') {
+            window.location.href = 'transaction-failed.html';
+        } else if (nextPage === 'confirmed') {
+            window.location.href = 'payment-confirmed.html';
+        } else {
+            window.location.href = 'payment-instructions.html';
+        }
+    }, 5000);
+</script>
+
+</body>
+</html>
